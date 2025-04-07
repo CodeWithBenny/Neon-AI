@@ -15,4 +15,4 @@ An intelligent coding assistant with features like:
 ### CLI
 ```bash
 python -m interfaces.cli complete "import "
-python -m interfaces.cli debug "print(x)" "NameError: name 'x' is not defined"
+python -m interfaces.cli debug "print(x)" "NameError: name 'x' is not defined"# Neon-AI
