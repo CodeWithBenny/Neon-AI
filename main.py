@@ -1,37 +1,26 @@
-from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from core import AICodingAssistant
+from core import (
+    AICodingAssistant,
+    project_manager,
+    collaboration,
+    code_review,
+    terminal,
+    version_control
+)
 import uvicorn
-import re
 
-app = FastAPI(title="Neon AI Coding Assistant")
+app = FastAPI(title="Enhanced AI Coding Assistant")
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 assistant = AICodingAssistant()
-
-
-def detect_language(code: str) -> str:
-    """Auto-detect programming language from code snippets"""
-    patterns = {
-        'python': (r'\b(def|import|from|__init__|lambda)\b',
-                   r'^\s*(#|""")'),
-        'javascript': (r'\b(function|let|const|=>|require\(|export)\b',
-                       r'^\s*(//|/\*)'),
-        'java': (r'\b(public\s+class|import\s+java\.|System\.out\.print)\b',
-                 r'^\s*(//|/\*)'),
-        'c': (r'#include\s+<|printf\(|->|struct\s+\w+\s*\{',
-              r'^\s*(//|/\*)'),
-        'cpp': (r'#include\s+<|std::|using\s+namespace|template\s*<',
-                r'^\s*(//|/\*)')
-    }
-
-    for lang, (keywords, comments) in patterns.items():
-        if re.search(keywords, code) or re.search(comments, code, re.MULTILINE):
-            return lang
-    return "python"  # default
+projects = project_manager()
+collaboration = collaboration()
+reviewer = code_review()
+terminal = terminal()
 
 
 @app.get("/")
@@ -39,36 +28,43 @@ async def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
-@app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
+@app.get("/project")
+async def project_view(request: Request):
+    project_structure = projects.load_project()
+    return templates.TemplateResponse("project.html", {
+        "request": request,
+        "project_structure": project_structure
+    })
+
+
+@app.websocket("/collab/{room_id}")
+async def collaboration_endpoint(websocket: WebSocket, room_id: str):
     await websocket.accept()
+    user_id = str(uuid.uuid4())
+
     try:
+        await collaboration.join_room(room_id, user_id, websocket)
         while True:
             data = await websocket.receive_json()
-            action = data.get("action")
-            code = data.get("code", "")
-
-            # Auto-detect language if not specified
-            language = data.get("language") or detect_language(code)
-
-            if action == "complete":
-                suggestions = assistant.completer.complete(code, language)
-                await websocket.send_json({
-                    "type": "suggestions",
-                    "data": suggestions,
-                    "detected_language": language
-                })
-
-            elif action == "explain":
-                explanation = assistant.explainer.explain(code, language)
-                await websocket.send_json({
-                    "type": "explanation",
-                    "data": explanation,
-                    "detected_language": language
-                })
-
+            await collaboration.broadcast(room_id, data, user_id)
     except WebSocketDisconnect:
-        print("Client disconnected")
+        await collaboration.leave_room(room_id, user_id)
+
+
+@app.post("/api/review")
+async def code_review(code: str, language: str):
+    return reviewer.review_code(code, language)
+
+
+@app.post("/api/terminal")
+async def run_command(command: str):
+    return terminal.execute(command)
+
+
+@app.post("/api/vcs/status")
+async def vcs_status():
+    vcs = version_control(projects.project_root)
+    return vcs.git_status()
 
 
 if __name__ == "__main__":

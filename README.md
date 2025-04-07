@@ -16,3 +16,5 @@ An intelligent coding assistant with features like:
 ```bash
 python -m interfaces.cli complete "import "
 python -m interfaces.cli debug "print(x)" "NameError: name 'x' is not defined"# Neon-AI
+
+Created by BENARD M. NYAKUNGA - +255 788 521 220
