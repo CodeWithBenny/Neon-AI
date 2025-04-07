@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon AI Coding Assistant</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="particles-container" id="particles-js"></div>
+    <div class="gradient-overlay"></div>
+
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo-container">
+                <div class="logo-circle pulse">
+                    <div class="inner-glow"></div>
+                    <i class="fas fa-code"></i>
+                </div>
+                <h1 class="logo-text slide-in">Neon<span>Code</span>AI</h1>
+            </div>
+            <div class="header-actions">
+                <button class="theme-toggle" id="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="code-editor-container floating">
+                <div class="editor-header glass">
+                    <div class="language-display">
+                        <span id="language-badge" class="language-badge pulse">Auto</span>
+                        <span id="language-name">Detecting...</span>
+                    </div>
+                    <div class="editor-actions">
+                        <button id="complete-btn" class="action-btn glow">
+                            <i class="fas fa-magic"></i> Complete
+                        </button>
+                        <button id="explain-btn" class="action-btn glow">
+                            <i class="fas fa-question-circle"></i> Explain
+                        </button>
+                    </div>
+                </div>
+
+                <div class="code-mirror-container glass">
+                    <div id="editor" class="code-editor" contenteditable="true" spellcheck="false"></div>
+                </div>
+            </div>
+
+            <div class="ai-response-container floating">
+                <div class="response-header glass">
+                    <div class="ai-avatar pulse">
+                        <div class="inner-glow"></div>
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>AI Assistant</h3>
+                    <div class="response-actions">
+                        <button id="copy-btn" class="icon-btn" title="Copy">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button id="clear-btn" class="icon-btn" title="Clear">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="response-content" class="response-content glass">
+                    <div class="welcome-message">
+                        <div class="welcome-animation">
+                            <div class="welcome-text">
+                                <p class="typing-text" id="typing-text"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <div class="footer-content">
+                <p>AI Coding Assistant v1.0</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="/static/js/particles-config.js"></script>
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/typing-animation.js"></script>
+    <script src="/static/js/language-detection.js"></script>
+    <script src="/static/js/theme-switcher.js"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+/* Fade in animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+.slide-in {
+    animation: slideIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* Pulse animation */
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(110, 72, 170, 0.7); }
+    70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(110, 72, 170, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(110, 72, 170, 0); }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Glow animation */
+@keyframes glow {
+    0% { box-shadow: 0 0 5px rgba(110, 72, 170, 0.5); }
+    50% { box-shadow: 0 0 20px rgba(110, 72, 170, 0.8); }
+    100% { box-shadow: 0 0 5px rgba(110, 72, 170, 0.5); }
+}
+
+.glow {
+    animation: glow 3s infinite ease-in-out;
+}
+
+/* Typing animation */
+@keyframes typingAnimation {
+    0% { opacity: 0.4; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(-5px); }
+    100% { opacity: 0.4; transform: translateY(0); }
+}
+
+/* Gradient background animation */
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.gradient-animation {
+    background: linear-gradient(-45deg, #6e48aa, #9d50bb, #4776e6, #8e54e9);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+}
